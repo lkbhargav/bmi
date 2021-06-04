@@ -1,5 +1,6 @@
 use super::extensions::FloatExtensions;
 use std::fmt::Display;
+use colored::*;
 
 #[derive(Debug)]
 pub struct BMI {
@@ -41,6 +42,22 @@ impl BMI {
         } else {
             BMIRange::Obese
         }
+    }
+
+    pub fn get_range_colored(&self) -> ColoredString {
+        let range = self.get_range();
+        let range_as_string = format!("{:?}", range);
+
+        match range {
+            BMIRange::Healthy => range_as_string.bright_green(),
+            BMIRange::UnderWeight => range_as_string.bright_blue(),
+            BMIRange::OverWeight => range_as_string.bright_magenta(),
+            BMIRange::Obese => range_as_string.bright_red(),
+        }
+    }
+
+    pub fn print(&self) {
+        println!("{}: {:.2} ({})", "BMI".bright_yellow(),  self.get_bmi(), self.get_range_colored())
     }
 }
 

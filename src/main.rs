@@ -5,9 +5,10 @@ use bmi::BMI;
 use extensions::{FloatExtensions, StringExtensions};
 use std::io::stdin;
 use std::process::exit;
+use colored::*;
 
 fn get_user_input(question: &str) -> String {
-    println!("{}", question);
+    println!("{}", question.bright_yellow());
 
     let mut resp = String::new();
     stdin()
@@ -22,12 +23,12 @@ fn main() {
 
     let height = get_user_input("Height? (inches)").parse_string_to_f32();
 
-    println!("Your height in feet: {:.2} feet", height.inchs_to_foot());
-    println!("Your height in cms: {:.2} cms\n", height.inches_to_cms());
+    println!("{}", format!("\nYour height in feet: {:.2} ft", height.inchs_to_foot()).italic());
+    println!("{}", format!("Your height in cms: {:.2} cms\n", height.inches_to_cms()).italic());
 
     let weight = get_user_input("Weight? (kilograms)").parse_string_to_f32();
 
-    println!("Your weight in lbs: {:.2} lbs\n", weight.kgs_to_lbs());
+    println!("{}", format!("\nYour weight in lbs: {:.2} lbs\n", weight.kgs_to_lbs()).italic());
 
     let bmi = match BMI::new(height, weight) {
         Ok(res) => res,
@@ -37,9 +38,5 @@ fn main() {
         }
     };
 
-    println!(
-        "Your BMI is {:.2}! And you are {:?}!",
-        bmi.get_bmi(),
-        bmi.get_range()
-    );
+    bmi.print();
 }
